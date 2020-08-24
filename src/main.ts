@@ -7,7 +7,7 @@ import axios from 'axios'
 Vue.config.productionTip = false
 
 Vue.prototype.$api = axios.create({
-  baseURL: 'https://todotodayback.herokuapp.com/'
+  baseURL: !process.env.VUE_APP_AXIOS_URL ? 'https://todotodayback.herokuapp.com/' : process.env.VUE_APP_AXIOS_URL
 })
 
 new Vue({

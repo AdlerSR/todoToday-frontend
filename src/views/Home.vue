@@ -24,6 +24,7 @@ export default class Home extends Vue {
 
   mounted() {
     this.handleTodos()
+    
   }
 
   public async handleTodos(): Promise<any>{
@@ -36,8 +37,6 @@ export default class Home extends Vue {
       })
 
       this.todos = res.data
-
-      console.log(res.data)
     } catch (error) {
       console.log(error)
     }
