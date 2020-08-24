@@ -24,7 +24,6 @@ export default class Home extends Vue {
 
   mounted() {
     this.handleTodos()
-    
   }
 
   public async handleTodos(): Promise<any>{
