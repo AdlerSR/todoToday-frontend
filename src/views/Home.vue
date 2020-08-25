@@ -134,18 +134,14 @@ export default class Home extends Vue {
   public async handleDeleteTodo(id: string) {
     try {
       const token = localStorage.getItem('@todoToday:token');
-      const res = await this.$api.patch('/todos/check', {
-        id: id,
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      })
+      const res = await this.$api.delete(`/todos/${id}`,  { 
+        headers: { 
+          "Authorization": `Bearer ${token}` 
+        } 
+      });
 
       const todo = this.todos.findIndex(todo => todo.id === id)
       const newTodo = this.todos.splice(todo, 1)
-
     } catch (err) {
       const errorMessage = JSON.parse(err.request.responseText);
       const {status, message} = errorMessage;
