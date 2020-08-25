@@ -13,4 +13,10 @@
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
 }
+
+.container {
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+}
 </style>
