@@ -271,7 +271,6 @@ export default class Home extends Vue {
 
   .home .container ul li .todo-content {
     filter: brightness(80%);
-    cursor: pointer;
     padding: 15px 10px;
   }
 </style>
