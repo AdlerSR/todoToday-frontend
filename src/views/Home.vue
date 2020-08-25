@@ -1,10 +1,11 @@
 <template>
   <div class="home">
+    <TodoPopup @clicked="onClickChild" />
     <Header />
     <section class="container">
       <div class="link-container">
         <h2>{{weekDay}} To-Dos</h2>
-        <button>Add to-do</button>
+        <button @click="handleAddTodoPopup">Add to-do <PlusIcon /></button>
       </div>
       <ul v-for="todo in todos"  v-bind:key="todo.id">
         <li v-bind:v-if="todo.checked === false">
@@ -28,16 +29,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import { Trash2Icon, EditIcon } from 'vue-feather-icons'
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Trash2Icon, EditIcon, PlusIcon } from 'vue-feather-icons'
 
 import Header from '../components/Header.vue';
+import TodoPopup from '../components/TodoPopup.vue';
 
 @Component({
   components: {
     Header,
+    TodoPopup,
     Trash2Icon,
-    EditIcon
+    EditIcon,
+    PlusIcon
   },
 })
 
@@ -149,11 +153,19 @@ export default class Home extends Vue {
     }
   }
 
+  public onClickChild (value: any) {
+    this.todos.unshift(value)
+  }
+
   public handleWeekDay() {
     let formatter = new Intl.DateTimeFormat('en-US', {
       weekday: 'long',
     })
     this.weekDay = formatter.format(Date.now());
+  }
+
+  public handleAddTodoPopup() {
+    this.$store.commit('changeState', 'enable')
   }
 }
 </script>
@@ -185,6 +197,9 @@ export default class Home extends Vue {
     font-weight: 500;
     font-size: 17px;
     color: #6053E9;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
   }
 
   .home .container ul li {

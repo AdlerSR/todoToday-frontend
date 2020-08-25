@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-bind:class="[this.$store.state.popupState]">
     <router-view/>
   </div>
 </template>
