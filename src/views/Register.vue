@@ -2,16 +2,21 @@
   <div class="login">
     <div class="login-container">
       <h1>To-do Today</h1>
-      <form>
+      <form @submit.prevent="handleRegister">
+        <label for="avatar"></label>
+        <input type="file" id="avatar" ref="avatar" v-on:change="uploadFile"/>
         <label for="name">Name:</label>
-        <input type="name" id="name" v-model="name">
+        <input type="name" id="name" v-model.trim="$v.name.$model">
+        <div class="error" v-bind:class="[this.errorMessage]" v-if="!$v.name.required">Field is required</div>
+        <div class="error" v-bind:class="[this.errorMessage]" v-if="!$v.name.minLength">Min {{$v.name.$params.minLength.min}} letters.</div>
         <label for="email">Email:</label>
-        <input type="email" id="email" v-model="email">
+        <input type="text" id="email" v-model="email">
+        <div class="error" v-bind:class="[this.errorMessage]" v-if="!$v.email.email">Must be an email</div>
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password">
-        <span v-if="errorMessage">{{errorMessage}}</span>
+        <input type="password" id="password" v-model.trim="$v.password.$model" >
+        <div class="error" v-bind:class="[this.errorMessage]" v-if="!$v.password.minLength">Min {{$v.password.$params.minLength.min}} letters.</div>
         <div class="form-button">
-          <button v-on:click.prevent="handleRegister">Register <ArrowRightIcon /></button>
+          <button type="submit">Register <ArrowRightIcon /></button>
         </div>
         <p>Already have an account? <router-link to="/">Login</router-link></p>
       </form>
@@ -22,24 +27,41 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { ArrowRightIcon  } from 'vue-feather-icons';
+import { minLength, required, email} from 'vuelidate/lib/validators';
 
 @Component({
   components: {
     ArrowRightIcon 
   },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(3)
+    },
+    email: {
+      email
+    },
+    password: {
+      required,
+      minLength: minLength(6)
+    }
+  }
 })
 
 export default class Login extends Vue {
 
+  avatar: any =  null;
   name: string = '';
   email: string = '';
   password: string = '';
-  errorMessage: string = '';
+  errorMessage: string = 'invisible';
   $api: any;
+  
 
   async handleRegister(): Promise<void>{
-    if(!this.name || !this.email || !this.password){
-      this.errorMessage = "Fill all required fields"
+    this.$v.$touch()  
+    if(this.$v.$invalid){
+      this.errorMessage = 'visible'
     } else {
       try {
         const res = await this.$api.post('/users', {
@@ -58,6 +80,26 @@ export default class Login extends Vue {
       }
     }
   }
+  async uploadFile(file: any){
+    let formData = new FormData();
+    formData.append('file', this.avatar);
+    const token = localStorage.getItem("@todoToday:token");
+
+    await this.$api.patch( '/users/avatar',
+      formData,
+      {
+      headers: {
+          'Authorization': `Bearer ${token}`
+      }
+    }
+    ).then(function(){
+      console.log('SUCCESS!!');
+    })
+    .catch(function(){
+      console.log('FAILURE!!');
+    });
+  }
+
 }
 </script>
 
@@ -107,7 +149,7 @@ export default class Login extends Vue {
     font-size: 15px;
   }
 
-  .login .login-container form span {
+  .login .login-container form .error {
     margin-top: 5px;
     color: #D3455A;
     font-weight: bold;
@@ -153,5 +195,11 @@ export default class Login extends Vue {
     color: #6456F4;
   }
   
+  .invisible {
+    display: none;
+  }
 
+  .visible {
+    display: block;
+  }
 </style>

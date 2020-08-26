@@ -54,11 +54,14 @@ export default class TodoPopup extends Vue {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           }
-        })
+        });
 
         this.newTodo = res.data;
-        this.$emit('clicked', this.newTodo)
-        this.$store.commit('changeState', 'disable')
+        this.$emit('clicked', this.newTodo);
+        this.$store.commit('changeState', 'disable');
+
+        this.title = '';
+        this.content = '';
       } catch (err) {
         const errorMessage = JSON.parse(err.request.responseText);
         const {status, message} = errorMessage;

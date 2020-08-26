@@ -3,8 +3,13 @@
     <div class="container">
       <h1>To-Do Today</h1>
       <div class="profile-container">
-        <p>Adler Rodrigues</p>
-        <img src="../assets/default.png" alt="user avatar">
+        <p>{{user.name}}</p>
+        <span v-if="!user.avatar">
+          <img src="../assets/default.png" alt="user avatar">
+        </span>
+        <span v-else>
+          <img :src="`http://localhost:3333/files/${user.avatar}`" alt="">
+        </span>
       </div>
     </div>
   </header>
@@ -21,6 +26,26 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 
 export default class Header extends Vue {
 
+  $api:any;
+  user: Array<object> = [];
+
+  mounted() {
+    this.handleUserInfo();
+  }
+
+  public async handleUserInfo(){
+    const token = localStorage.getItem('@todoToday:token');
+
+    const res = await this.$api.get('/users', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    this.user = res.data
+
+    console.log(res.data)
+  }
 }
 </script>
 

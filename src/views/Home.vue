@@ -7,23 +7,25 @@
         <h2>{{weekDay}} To-Dos</h2>
         <button @click="handleAddTodoPopup">Add to-do <PlusIcon /></button>
       </div>
-      <ul v-for="todo in todos"  v-bind:key="todo.id">
-        <li v-bind:v-if="todo.checked === false">
-          <div class="todo-header">
-            <div class="todo-header__left">
-              <input type="checkbox" v-bind:checked="todo.checked" @click="handleCheckTodo(todo.id)">
-              <h2>{{todo.title}}</h2>
+      <div v-if="todos !== null">
+        <ul v-for="todo in todos"  v-bind:key="todo.id" >
+          <li v-bind:v-if="todo.checked === false">
+            <div class="todo-header">
+              <div class="todo-header__left">
+                <input type="checkbox" v-bind:checked="todo.checked" @click="handleCheckTodo(todo.id)">
+                <h2>{{todo.title}}</h2>
+              </div>
+              <div class="todo-header__right">
+                <EditIcon />
+                <Trash2Icon @click="handleDeleteTodo(todo.id)"/>
+              </div>
             </div>
-            <div class="todo-header__right">
-              <EditIcon />
-              <Trash2Icon @click="handleDeleteTodo(todo.id)"/>
+            <div class="todo-content">
+              <p>{{todo.content}}</p>
             </div>
-          </div>
-          <div class="todo-content">
-            <p>{{todo.content}}</p>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
     </section>
   </div>
 </template>
@@ -151,6 +153,7 @@ export default class Home extends Vue {
 
   public onClickChild (value: any) {
     this.todos.unshift(value)
+    console.log(value)
   }
 
   public handleWeekDay() {
@@ -246,6 +249,13 @@ export default class Home extends Vue {
     font-size: 18px;
     text-transform: capitalize;
     color: #293845;
+    word-wrap: break-word;
+  }
+
+  .home .container ul li .todo-header .todo-header__left p {
+    font-weight: 400;
+    color: #293845;
+    word-wrap: break-word;
   }
 
   .home .container ul li .todo-header .todo-header__right svg + svg {
@@ -268,5 +278,12 @@ export default class Home extends Vue {
   .home .container ul li .todo-content {
     filter: brightness(80%);
     padding: 15px 10px;
+  }
+
+  .home .container ul li .todo-content p {
+    font-weight: 400;
+    color: #293845;
+    word-wrap: break-word;
+    letter-spacing: 0.4px;
   }
 </style>
