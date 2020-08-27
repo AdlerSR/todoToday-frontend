@@ -71,8 +71,6 @@ export default class Login extends Vue {
     this.avatar = event.target.files[0];
     this.avatarUrl = URL.createObjectURL(this.avatar);
     const reader = new FileReader();
-
-    console.log(this.avatarUrl)
   }
   
   async handleRegister(): Promise<void>{
@@ -84,7 +82,6 @@ export default class Login extends Vue {
         var data = new FormData();
         data.append('avatar', this.avatar);
         
-          
         await this.$api.post('/users/avatar', data)
         .then((res: any) => {
           this.avatar = res.data.key

@@ -4,11 +4,10 @@
       <h1>To-Do Today</h1>
       <div class="profile-container">
         <p>{{user.name}}</p>
-        <span v-if="!user.avatar">
-          <img src="../assets/default.png" alt="user avatar">
-        </span>
-        <span v-else>
-          <img :src="`http://localhost:3333/files/${user.avatar}`" alt="">
+        <span >
+          <img v-if="!user.avatar" src="../assets/default.png" alt="user avatar">
+          <img v-else-if="!this.host" :src="`https://todotodayback.herokuapp.com/files/${user.avatar}`"  alt="user avatar" />
+          <img v-else :src="`http://localhost:3333/files/${user.avatar}`" alt="user avatar">
         </span>
       </div>
     </div>
@@ -28,6 +27,7 @@ export default class Header extends Vue {
 
   $api:any;
   user: Array<object> = [];
+  host: string = process.env.VUE_APP_AXIOS_URL
 
   mounted() {
     this.handleUserInfo();
@@ -43,8 +43,6 @@ export default class Header extends Vue {
     })
 
     this.user = res.data
-
-    console.log(res.data)
   }
 }
 </script>
