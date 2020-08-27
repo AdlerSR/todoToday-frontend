@@ -3,7 +3,16 @@
     <div class="login-container">
       <h1>To-do Today</h1>
       <form @submit.prevent="handleRegister">
-        <label for="avatar"></label>
+        <div v-if="avatarUrl" class="avatar-container">
+          <label for="avatar">
+            <img :src="this.avatarUrl" alt="user avatar">
+          </label>
+        </div>
+        <div v-else class="avatar-container">
+          <label for="avatar">
+            <img src="../assets/default.png" alt="user avatar">
+          </label>
+        </div>
         <input type="file" id="avatar" ref="avatar" v-on:change="uploadFile"/>
         <label for="name">Name:</label>
         <input type="name" id="name" v-model.trim="$v.name.$model">
@@ -51,26 +60,44 @@ import { minLength, required, email} from 'vuelidate/lib/validators';
 export default class Login extends Vue {
 
   avatar: any =  null;
+  avatarUrl: any = null;
   name: string = '';
   email: string = '';
   password: string = '';
   errorMessage: string = 'invisible';
   $api: any;
-  
 
+  async uploadFile(event: any){
+    this.avatar = event.target.files[0];
+    this.avatarUrl = URL.createObjectURL(this.avatar);
+    const reader = new FileReader();
+
+    console.log(this.avatarUrl)
+  }
+  
   async handleRegister(): Promise<void>{
     this.$v.$touch()  
     if(this.$v.$invalid){
       this.errorMessage = 'visible'
     } else {
       try {
-        const res = await this.$api.post('/users', {
+        var data = new FormData();
+        data.append('avatar', this.avatar);
+        
+          
+        await this.$api.post('/users/avatar', data)
+        .then((res: any) => {
+          this.avatar = res.data.key
+        });
+
+        await this.$api.post('/users', {
           name: this.name,
           email: this.email,
           password: this.password,
+          avatar: this.avatar
         });
 
-        this.$router.push('/')
+        this.$router.push('/');
 
       } catch (err) {
         const errorMessage = JSON.parse(err.request.responseText);
@@ -80,25 +107,7 @@ export default class Login extends Vue {
       }
     }
   }
-  async uploadFile(file: any){
-    let formData = new FormData();
-    formData.append('file', this.avatar);
-    const token = localStorage.getItem("@todoToday:token");
-
-    await this.$api.patch( '/users/avatar',
-      formData,
-      {
-      headers: {
-          'Authorization': `Bearer ${token}`
-      }
-    }
-    ).then(function(){
-      console.log('SUCCESS!!');
-    })
-    .catch(function(){
-      console.log('FAILURE!!');
-    });
-  }
+  
 
 }
 </script>
@@ -131,6 +140,34 @@ export default class Login extends Vue {
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .login .login-container form .avatar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .login .login-container form .avatar-container img {
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  .login .login-container form .avatar-container img:hover {
+    filter: brightness(80%);
+  }
+
+  .login .login-container form input[type = "file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
   }
   
   .login .login-container form input {
