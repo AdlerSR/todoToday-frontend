@@ -19,4 +19,28 @@
   max-width: 840px;
   margin: 0 auto;
 }
+
+@media (max-width: 980px){
+  .container {
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 980px){
+  .container {
+    width: 100%;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 560px){
+  .container {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+}
 </style>

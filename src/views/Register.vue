@@ -239,4 +239,14 @@ export default class Login extends Vue {
   .visible {
     display: block;
   }
+
+  @media (max-width: 560px){
+    .login .login-container {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      border: 0;
+      padding: 0px;
+    }
+  }
 </style>

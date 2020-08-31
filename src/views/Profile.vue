@@ -93,6 +93,13 @@ export default class Profile extends Vue {
     padding: 100px 0px;
   }
 
+  .profile-card .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .profile-card .profile-info img {
     border-radius: 100%;
     width: 200px;
@@ -138,5 +145,40 @@ export default class Profile extends Vue {
 
   .progress-container .progress-items .progress-card__unfinished {
     color: #D65267;
+  }
+
+  @media (max-width: 560px) {
+    .container {
+      height: 86vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-card .profile-info img {
+      width: 150px;
+      height: 150px;
+    }
+
+    .progress-container {
+      width: 280px;
+    }
+
+    .progress-container .progress-items .progress-card {
+      background: #ffffff;
+      border-radius: 5px;
+      padding: 40px 0px;
+      height: 120px;
+      width: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    .profile-card {
+      height: 400px;
+      padding: 10px 0px;
+    }
   }
 </style>

@@ -8,8 +8,8 @@
         <button @click="handleAddTodoPopup">Add to-do <PlusIcon /></button>
       </div>
       <div v-if="todos !== null">
-        <ul v-for="todo in todos"  v-bind:key="todo.id" >
-          <li v-bind:v-if="todo.checked === false">
+        <ul>
+          <li v-bind:v-if="todo.checked === false" v-for="todo in todos"  v-bind:key="todo.id">
             <div class="todo-header">
               <div class="todo-header__left">
                 <input type="checkbox" v-bind:checked="todo.checked" @click="handleCheckTodo(todo.id)">
@@ -164,7 +164,11 @@ export default class Home extends Vue {
   }
 
   public handleAddTodoPopup() {
-    this.$store.commit('changePopup', 'enable')
+    this.$store.commit('changePopup', 'enable');
+
+    const body = document.body;
+
+    body.style.overflowY = "hidden";
   }
 }
 </script>

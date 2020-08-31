@@ -59,6 +59,7 @@ export default class TodoPopup extends Vue {
         this.newTodo = res.data;
         this.$emit('clicked', this.newTodo);
         this.$store.commit('changePopup', 'disable');
+        this.handleClosePopup();
 
         this.title = '';
         this.content = '';
@@ -71,7 +72,11 @@ export default class TodoPopup extends Vue {
   }
 
   public handleClosePopup(){
-    this.$store.commit('changePopup', 'disable')
+    this.$store.commit('changePopup', 'disable');
+
+    const body = document.body;
+
+    body.style.overflowY = "auto";
   }
 }
 </script>
@@ -80,14 +85,14 @@ export default class TodoPopup extends Vue {
   .todo-popup__background{
     width: 100%;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     background: rgba(0, 0, 0, 0.377);
     z-index: 999;
     transition: opacity 200ms;
   }
 
   .todo-popup__content{
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -162,4 +167,23 @@ export default class TodoPopup extends Vue {
     pointer-events: none;
   }
   
+  @media (max-width: 560px){
+    header .profile-container p {
+      margin-right: 0;
+      width: 90px;
+    }
+
+    header a {
+      font-size: 23px;
+    }
+  }
+
+  .todo-popup__content{
+    height: 300px;
+  }
+
+  .todo-popup__content form{
+    height: 300px;
+    width: 300px;
+  }
 </style>

@@ -150,4 +150,15 @@ export default class Header extends Vue {
     opacity: 1;
     pointer-events: all;
   }
+
+  @media (max-width: 560px){
+    header .profile-container p {
+      margin-right: 0;
+      width: 90px;
+    }
+
+    header a {
+      font-size: 23px;
+    }
+  }
 </style>
