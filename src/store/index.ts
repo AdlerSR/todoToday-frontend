@@ -5,14 +5,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    popupState: 'disable'
+    popupState: 'disable',
+    dropdownState: 'disable'
   },
   getters: {
 
   },
   mutations: {
-    changeState: (state, popup) => {
+    changePopup: (state, popup) => {
       state.popupState = popup;
+    },
+
+    changeDropdown: (state, dropdown) => {
+      state.dropdownState = dropdown;
     }
   },
   actions: {

@@ -79,14 +79,17 @@ export default class Login extends Vue {
       this.errorMessage = 'visible'
     } else {
       try {
-        var data = new FormData();
-        data.append('avatar', this.avatar);
-        
-        await this.$api.post('/users/avatar', data)
-        .then((res: any) => {
-          this.avatar = res.data.key
-        });
 
+        if(this.avatar){
+          var data = new FormData();
+          data.append('avatar', this.avatar);
+          
+          await this.$api.post('/users/avatar', data)
+          .then((res: any) => {
+            this.avatar = res.data.key
+          });
+        }
+        
         await this.$api.post('/users', {
           name: this.name,
           email: this.email,
