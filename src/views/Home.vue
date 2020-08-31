@@ -164,7 +164,7 @@ export default class Home extends Vue {
   }
 
   public handleAddTodoPopup() {
-    this.$store.commit('changeState', 'enable')
+    this.$store.commit('changePopup', 'enable')
   }
 }
 </script>

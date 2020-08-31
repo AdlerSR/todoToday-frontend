@@ -58,7 +58,7 @@ export default class TodoPopup extends Vue {
 
         this.newTodo = res.data;
         this.$emit('clicked', this.newTodo);
-        this.$store.commit('changeState', 'disable');
+        this.$store.commit('changePopup', 'disable');
 
         this.title = '';
         this.content = '';
@@ -71,7 +71,7 @@ export default class TodoPopup extends Vue {
   }
 
   public handleClosePopup(){
-    this.$store.commit('changeState', 'disable')
+    this.$store.commit('changePopup', 'disable')
   }
 }
 </script>
